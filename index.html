@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Rohan Kalluraya — ECE and M.Eng. student at Cornell University. Hardware design, verification, and computer architecture.">
+  <title>Rohan Kalluraya — ECE @ Cornell</title>
+
+  <!-- Fonts: editorial serif for display, clean grotesk for body, mono for accents -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================
+       Reset & base
+       ========================================================= */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    img { max-width: 100%; display: block; }
+
+    /* =========================================================
+       Design tokens
+       ========================================================= */
+    :root {
+      --bg: #faf8f4;            /* warm off-white paper */
+      --bg-elev: #ffffff;       /* elevated card */
+      --ink: #1a1a1a;           /* near-black text */
+      --muted: #6b6b6b;         /* secondary text */
+      --faint: #9a9690;         /* tertiary text */
+      --rule: #d8d4cb;          /* horizontal rules */
+      --accent: #b8431f;        /* burnt orange */
+      --accent-soft: #f3e6dd;   /* tinted background */
+      --max-width: 760px;
+      --serif: "Fraunces", Georgia, serif;
+      --sans: "Inter", system-ui, sans-serif;
+      --mono: "JetBrains Mono", Menlo, monospace;
+    }
+
+    /* =========================================================
+       Body & typography
+       ========================================================= */
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 17px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: var(--ink); }
+
+    /* =========================================================
+       Layout container
+       ========================================================= */
+    .page {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 96px 32px 128px;
+    }
+
+    @media (max-width: 540px) {
+      .page { padding: 56px 22px 80px; }
+    }
+
+    /* =========================================================
+       Subtle page-load reveal (staggered)
+       ========================================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(8px);
+      animation: rise 0.7s ease forwards;
+    }
+    .reveal:nth-child(1) { animation-delay: 0.05s; }
+    .reveal:nth-child(2) { animation-delay: 0.15s; }
+    .reveal:nth-child(3) { animation-delay: 0.25s; }
+    .reveal:nth-child(4) { animation-delay: 0.35s; }
+    .reveal:nth-child(5) { animation-delay: 0.45s; }
+    .reveal:nth-child(6) { animation-delay: 0.55s; }
+    .reveal:nth-child(7) { animation-delay: 0.65s; }
+
+    @keyframes rise {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Respect user motion preferences */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { animation: none; opacity: 1; transform: none; }
+    }
+
+    /* =========================================================
+       Masthead
+       ========================================================= */
+    .masthead { margin-bottom: 56px; }
+
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 0 0 16px;
+    }
+
+    .name {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: clamp(2.5rem, 6vw, 3.6rem);
+      line-height: 1.02;
+      letter-spacing: -0.025em;
+      margin: 0 0 14px;
+    }
+
+    .tagline {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 400;
+      font-size: 1.2rem;
+      color: var(--muted);
+      margin: 0 0 28px;
+      max-width: 36em;
+    }
+
+    .meta {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .meta a {
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule);
+      transition: border-color 0.18s ease, color 0.18s ease;
+    }
+
+    .meta a:hover { border-color: var(--accent); color: var(--accent); }
+
+    .meta-sep { margin: 0 10px; color: var(--rule); }
+
+    /* =========================================================
+       Section headings
+       ========================================================= */
+    section { margin-top: 64px; }
+
+    h2 {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 0 0 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--rule);
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+
+    h2 .count {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      color: var(--faint);
+    }
+
+    /* =========================================================
+       About paragraph
+       ========================================================= */
+    .about p {
+      font-family: var(--serif);
+      font-size: 1.18rem;
+      line-height: 1.6;
+      margin: 0 0 14px;
+      max-width: 38em;
+    }
+
+    /* =========================================================
+       Education
+       ========================================================= */
+    .edu-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4px 24px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .edu-row:last-child { border-bottom: none; }
+
+    .edu-row .school {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .edu-row .when {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .edu-row .degree {
+      grid-column: 1 / -1;
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    /* =========================================================
+       Experience entries
+       ========================================================= */
+    .entry {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .entry:last-child { border-bottom: none; }
+
+    .entry-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4px 24px;
+      align-items: baseline;
+      margin-bottom: 6px;
+    }
+
+    .entry-head h3 {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .entry-head .when {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .entry .role {
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-style: italic;
+      margin: 0;
+    }
+
+    .entry ul {
+      list-style: none;
+      padding: 0;
+      margin: 12px 0 0;
+    }
+
+    .entry ul li {
+      position: relative;
+      padding-left: 18px;
+      margin-bottom: 8px;
+      font-size: 0.97rem;
+      color: var(--ink);
+    }
+
+    /* Custom bullet — a small accent-colored dash */
+    .entry ul li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.75em;
+      width: 8px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    /* =========================================================
+       Skills
+       ========================================================= */
+    .skills-group {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .skills-group:last-child { border-bottom: none; }
+
+    .skills-label {
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--muted);
+      margin: 4px 0 0;
+    }
+
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .skills-list li {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      padding: 4px 9px;
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      background: var(--bg-elev);
+      color: var(--ink);
+    }
+
+    /* "Featured" tags get the accent treatment */
+    .skills-list li.featured {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    @media (max-width: 540px) {
+      .skills-group { grid-template-columns: 1fr; gap: 8px; }
+    }
+
+    /* =========================================================
+       Project cards
+       ========================================================= */
+    .project {
+      padding: 22px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .project:last-child { border-bottom: none; }
+
+    .project h3 {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 0 0 4px;
+    }
+
+    .project .stack {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin: 0 0 10px;
+    }
+
+    .project p {
+      font-size: 0.96rem;
+      margin: 0;
+      color: var(--ink);
+    }
+
+    /* =========================================================
+       Footer
+       ========================================================= */
+    footer {
+      margin-top: 88px;
+      padding-top: 24px;
+      border-top: 1px solid var(--rule);
+      font-size: 0.82rem;
+      color: var(--faint);
+      font-family: var(--mono);
+    }
+
+    /* =========================================================
+       Print stylesheet
+       ========================================================= */
+    @media print {
+      body { background: #fff; color: #000; font-size: 11pt; }
+      .page { padding: 0; max-width: 100%; }
+      .reveal { animation: none; opacity: 1; transform: none; }
+      a { color: #000; border: none !important; }
+      section { margin-top: 24px; page-break-inside: avoid; }
+      footer { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+
+    <!-- ============================================
+         MASTHEAD
+         ============================================ -->
+    <header class="masthead reveal">
+      <p class="eyebrow">ECE · M.Eng · Cornell University</p>
+      <h1 class="name">Rohan Kalluraya</h1>
+      <p class="tagline">
+        Hardware design and verification &mdash; SystemVerilog,
+        UVM, computer architecture, and the gap between RTL and silicon.
+      </p>
+      <p class="meta">
+        <a href="mailto:rak298@cornell.edu">rak298@cornell.edu</a>
+        <span class="meta-sep">·</span>
+        <a href="https://www.linkedin.com/in/rohankall/">LinkedIn</a>
+        <span class="meta-sep">·</span>
+        <a href="Rohan_Kalluraya_Resume.pdf">Résumé</a>
+      </p>
+    </header>
+
+    <!-- ============================================
+         ABOUT
+         ============================================ -->
+    <section class="about reveal">
+      <h2>About</h2>
+      <p>
+        I&rsquo;m a B.S. and M.Eng. student in Electrical &amp; Computer
+        Engineering at Cornell, focused on digital design, verification,
+        and computer architecture.
+      </p>
+      <p>
+        I currently lead the verification subteam on Cornell&rsquo;s
+        Custom Silicon Systems (C2S2) project, and I&rsquo;m joining
+        Marvell Technology this summer as a Design Verification Intern.
+      </p>
+    </section>
+
+    <!-- ============================================
+         EDUCATION
+         ============================================ -->
+    <section class="education reveal">
+      <h2>Education <span class="count">01 / 05</span></h2>
+
+      <div class="edu-row">
+        <span class="school">Cornell University</span>
+        <span class="when">June 2027</span>
+        <p class="degree">M.Eng. in Electrical &amp; Computer Engineering</p>
+      </div>
+
+      <div class="edu-row">
+        <span class="school">Cornell University</span>
+        <span class="when">June 2026</span>
+        <p class="degree">
+          B.S. in Electrical &amp; Computer Engineering, Minor in
+          Computer Science &mdash; GPA 3.74
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================
+         EXPERIENCE
+         ============================================ -->
+    <section class="experience reveal">
+      <h2>Experience <span class="count">02 / 05</span></h2>
+
+      <article class="entry">
+        <div class="entry-head">
+          <h3>Marvell Technology</h3>
+          <span class="when">May &mdash; Aug 2026</span>
+        </div>
+        <p class="role">Incoming Design Verification Intern · Westborough, MA</p>
+      </article>
+
+      <article class="entry">
+        <div class="entry-head">
+          <h3>Cornell Custom Silicon Systems (C2S2)</h3>
+          <span class="when">Sep 2025 &mdash; Present</span>
+        </div>
+        <p class="role">Verification Subteam Lead · Ithaca, NY</p>
+        <ul>
+          <li>Verified an SRAM minion subsystem and synchronous FIFO using Cocotb and UVM testbenches.</li>
+          <li>Integrated FP16 adder functionality into an out-of-order, superscalar processor and verified both the unit logic and full-system integration.</li>
+          <li>Developed tape-in-level SystemVerilog testbenches and coverage classes for a full SoC integration &mdash; processor with SRAM, TinyMem, and a systolic-array accelerator.</li>
+        </ul>
+      </article>
+
+      <article class="entry">
+        <div class="entry-head">
+          <h3>Ambient Scientific</h3>
+          <span class="when">Jun &mdash; Sep 2025</span>
+        </div>
+        <p class="role">RTL Design Intern · Remote</p>
+        <ul>
+          <li>Architected a low-power I³C Master Controller with AHB-Lite interface and dual 8×16 FIFOs, doubling sensor data throughput over the prior I²C-only implementation.</li>
+          <li>Implemented SDA hybrid and SCL push-pull drivers with dynamic I²C/I³C fallback across legacy devices.</li>
+          <li>Developed FSMs for ENTDAA, Hot-Join, and IBI with payload support &mdash; under 50-cycle interrupt latency.</li>
+        </ul>
+      </article>
+
+      <article class="entry">
+        <div class="entry-head">
+          <h3>Mohammad Alian Research Group</h3>
+          <span class="when">Jan &mdash; Aug 2025</span>
+        </div>
+        <p class="role">ASIC Research Intern · Cornell</p>
+        <ul>
+          <li>Architected a 64-engine Near-Memory Accelerator for Retrieval-Augmented Generation: 2 KB scratchpad, 68×1 GHz FP16 MAC dot-product unit (68 GFLOPS), on-PE Top-K.</li>
+          <li>Engineered a fixed-broadcast NoC streaming 136 bytes/cycle from LPDDR5X DRAM &mdash; fully saturating 136 GB/s of memory bandwidth.</li>
+        </ul>
+      </article>
+
+      <article class="entry">
+        <div class="entry-head">
+          <h3>Zhiru Zhang Research Group</h3>
+          <span class="when">Jan &mdash; Jun 2025</span>
+        </div>
+        <p class="role">Hardware Research Intern · Cornell Computer Systems Lab</p>
+        <ul>
+          <li>Built a six-layer Differentiable Logic Gate Network accelerator on Xilinx XCU280 using Allo.</li>
+          <li>Optimized end-to-end inference to 0.768 ms on binarized inputs &mdash; <strong>40% faster than an NVIDIA A100</strong> (1.28 ms).</li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- ============================================
+         PROJECTS
+         ============================================ -->
+    <section class="projects reveal">
+      <h2>Selected Projects <span class="count">03 / 05</span></h2>
+
+      <article class="project">
+        <h3>5-Stage Multicore Pipelined RISC-V Processor</h3>
+        <p class="stack">Verilog · Quartus · FPGA</p>
+        <p>
+          Four-core, five-stage pipelined RISC-V processor with hazard
+          detection, squashing, and stalling across 34+ ISA instructions.
+          Includes a 4 KB, 2-way set-associative write-allocate cache
+          with LRU replacement, and a comparison of bimodal vs. global
+          branch predictors.
+        </p>
+      </article>
+
+      <article class="project">
+        <h3>8-Bit Sigmoid via ROM Lookup &amp; Linear Interpolation</h3>
+        <p class="stack">Cadence Virtuoso · CMOS · MATLAB</p>
+        <p>
+          Transistor-level 8-bit digital circuit computing the sigmoid
+          activation function. A 32-entry NOR ROM stores base values
+          <em>f(x)</em> and 5-bit first-difference deltas, addressed by
+          the upper five bits of the input; a 5×3 Wallace-tree multiplier
+          scales the delta by the lower three fractional bits, and an
+          8-bit Sklansky adder produces the interpolated output.
+        </p>
+        <p style="margin-top: 10px;">
+          Three non-overlapping clock phases (precharge / evaluate /
+          present) separate bitline conditioning from combinational
+          evaluation. Full-adder, half-adder, and ROM cells were designed
+          at the transistor level. Verified bit-exactly across all 256
+          inputs against a golden MATLAB model.
+        </p>
+      </article>
+    </section>
+
+    <!-- ============================================
+         SKILLS
+         ============================================ -->
+    <section class="skills reveal">
+      <h2>Skills <span class="count">04 / 05</span></h2>
+
+      <div class="skills-group">
+        <p class="skills-label">Hardware &amp; HDL</p>
+        <ul class="skills-list">
+          <li class="featured">SystemVerilog</li>
+          <li class="featured">Verilog</li>
+          <li>UVM</li><li>Cocotb</li><li>Cadence Virtuoso</li>
+          <li>LTSpice</li><li>OrCAD</li><li>Altium</li>
+        </ul>
+      </div>
+
+      <div class="skills-group">
+        <p class="skills-label">Languages</p>
+        <ul class="skills-list">
+          <li>C</li><li>C++</li><li>Python</li><li>OCaml</li>
+          <li>MATLAB</li><li>Bash</li><li>SQL</li>
+        </ul>
+      </div>
+
+      <div class="skills-group">
+        <p class="skills-label">Platforms</p>
+        <ul class="skills-list">
+          <li>Linux</li><li>Git</li><li>HLS</li>
+          <li>Xilinx Vivado</li><li>Quartus</li>
+        </ul>
+      </div>
+
+      <div class="skills-group">
+        <p class="skills-label">Web</p>
+        <ul class="skills-list">
+          <li class="featured">HTML</li>
+          <li class="featured">CSS</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================
+         TEACHING
+         ============================================ -->
+    <section class="teaching reveal">
+      <h2>Teaching <span class="count">05 / 05</span></h2>
+
+      <article class="entry">
+        <div class="entry-head">
+          <h3>ECE 2300 &mdash; Digital Logic &amp; Computer Organization</h3>
+          <span class="when">Cornell</span>
+        </div>
+        <p class="role">Teaching Assistant · Prof. Christopher Batten</p>
+      </article>
+    </section>
+
+    <!-- ============================================
+         FOOTER
+         ============================================ -->
+    <footer>
+      <p>Hand-coded in HTML &amp; CSS. No frameworks, no builders. View source.</p>
+    </footer>
+
+  </main>
+</body>
+</html>
